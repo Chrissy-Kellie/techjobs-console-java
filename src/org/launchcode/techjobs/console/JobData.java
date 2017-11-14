@@ -14,12 +14,17 @@ import java.util.List;
 /**
  * Created by LaunchCode
  */
+
+
+
 public class JobData {
 
     private static final String DATA_FILE = "resources/job_data.csv";
     private static Boolean isDataLoaded = false;
 
+    //allJobs is not yet assigned... it's assigned on line 106
     private static ArrayList<HashMap<String, String>> allJobs;
+
 
     /**
      * Fetch list of all values from loaded data,
@@ -28,6 +33,8 @@ public class JobData {
      * @param field The column to retrieve values from
      * @return List of all of the values of the given field
      */
+
+
     public static ArrayList<String> findAll(String field) {
 
         // load data, if not already loaded
@@ -84,6 +91,23 @@ public class JobData {
         return jobs;
     }
 
+    //findByValue
+    public static ArrayList<HashMap<String, String>> findByValue(String value){
+        loadData();
+
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for(HashMap<String, String> job : allJobs){
+            for(String key:job.keySet()){
+                String aValue=job.get(key).toLowerCase();
+                if(aValue.contains(value.toLowerCase())){
+                    jobs.add(job);
+                }
+            }
+        }
+
+        return jobs;
+    }
     /**
      * Read in data from a CSV file and store it in a list
      */
@@ -103,6 +127,7 @@ public class JobData {
             Integer numberOfColumns = records.get(0).size();
             String[] headers = parser.getHeaderMap().keySet().toArray(new String[numberOfColumns]);
 
+            //this line assigns allJobs or line 116
             allJobs = new ArrayList<>();
 
             // Put the records into a more friendly format
